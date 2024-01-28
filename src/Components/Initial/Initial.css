@@ -1,0 +1,36 @@
+.weather-img{
+    height:400px;
+    width:400px;
+    display:flex;
+    margin:auto;
+    text-align:center;
+    justify-content:center;
+}
+button{
+    background-color:#FDDA0D;
+    border-radius:20px;
+}
+.title{
+    display:flex;
+    margin-left:80px;
+}
+.getstarted{
+    color:#130754;
+    font-size:20px;
+    margin-left: 75px;
+    height:50px;
+    width:400px;
+    margin-bottom: 50px;
+}
+.weather{
+    color:#A45EE5;
+    font-size:70px;
+    font-weight: 400;
+    display:flex;
+}
+.quill{
+    color: #FDDA0D;
+    font-weight: 400;
+    font-size:70px;
+    display:flex;
+}
