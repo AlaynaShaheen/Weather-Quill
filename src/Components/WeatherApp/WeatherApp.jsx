@@ -15,15 +15,16 @@ import thunder from '../Assets/thunder.png';
 import feelslike from '../Assets/feelslike.png';
 const WeatherApp = () => {
   let api_key="38eb6e4df1d830270a50fefb4d4f3e4e";
-  const [wicon,setwicon]=useState(cloudy);
-  
+  const [wicon,setwicon]=useState(drizzle);
+  const [cityInput, setCityInput] = useState('');
+
   const searc=async ()=>{
         const element=document.getElementsByClassName('cityInput');
         if(element[0].value==="")
         {
           return 0;
         }
-        let url=`https://api.openweathermap.org/data/2.5/weather?q=${element[0].value}&appid=${ api_key}&units=metric`;
+        let url=`https://api.openweathermap.org/data/2.5/weather?q=${element[0].value}&appid=${api_key}&units=metric`;
         try{
           let response=await fetch(url);
           let data=await response.json();
@@ -32,6 +33,8 @@ const WeatherApp = () => {
         const temp=document.getElementsByClassName("weather-temp");
         const location=document.getElementsByClassName("weather-location");
         const feels=document.getElementsByClassName("feelslike");
+        const tmax=document.getElementsByClassName("temp-max");
+        const tmin=document.getElementsByClassName("temp-min");
         console.log(data.name)
         // wind[0].innerHTML=data.wind.speed;
         // temp[0].innerHTML=data.main.temp;
@@ -66,55 +69,72 @@ const WeatherApp = () => {
     } else {
         feels[0].innerHTML = 'N/A';
     }
+    if (data.main && data.main.temp_min !== undefined) {
+      tmin[0].innerHTML = Math.floor(data.main.temp_min)+"°C";
+  } else {
+      tmin[0].innerHTML = 'N/A';
+  }
+  if (data.main && data.main.temp_max!== undefined) {
+   tmax[0].innerHTML = Math.floor(data.main.temp_max)+"°C";
+} else {
+    tmax[0].innerHTML = 'N/A';
+}
+    setwicon(`https://openweathermap.org/img/wn/${data.weather[0].icon}.png`);
     
-      if(data.weather[0].icon==="01d" || data.weather[0].icon==="01n")
-       {
-    setwicon(sunny);
-       }
-       else if(data.weather[0].icon==="02d" || data.weather[0].icon==="02n")
-       {
-        setwicon(cloudy);
-       }
-       else if(data.weather[0].icon==="03d" || data.weather[0].icon==="03n")
-       {
-        setwicon(cloudy);
-       }
-       else if(data.weather[0].icon==="04d" || data.weather[0].icon==="04n")
-       {
-        setwicon(cloudy);
-       }
-       else if(data.weather[0].icon==="09d" || data.weather[0].icon==="09n")
-       {
-        setwicon(light_rain);
-       }
-       else if(data.weather[0].icon==="10d" || data.weather[0].icon==="10n")
-       {
-        setwicon(drizzle);
-       }
-       else if(data.weather[0].icon==="11d" || data.weather[0].icon==="11n")
-       {
-        setwicon(thunder);
-       }
-       else if(data.weather[0].icon==="13d" || data.weather[0].icon==="13n")
-       {
-        setwicon(snow);
-       }
-       else{
-        setwicon(sunny);
-       }
-       if(data.weather[0].icon==="01d" || data.weather[0].icon==="02d" || data.weather[0].icon==="03d" || data.weather[0].icon==="04d" || data.weather[0].icon==="09d" || data.weather[0].icon==="10d" || data.weather[0].icon==="11d" || data.weather[0].icon==="13d")
-       {
+    //   if(data.weather[0].icon==="01d" || data.weather[0].icon==="01n")
+    //    {
+    // setwicon(data.weather[0].icon);
+    //    }
+    //    else if(data.weather[0].icon==="02d" || data.weather[0].icon==="02n")
+    //    {
+    //     setwicon(cloudy);
+    //    }
+    //    else if(data.weather[0].icon==="03d" || data.weather[0].icon==="03n")
+    //    {
+    //     setwicon(cloudy);
+    //    }
+    //    else if(data.weather[0].icon==="04d" || data.weather[0].icon==="04n")
+    //    {
+    //     setwicon(cloudy);
+    //    }
+    //    else if(data.weather[0].icon==="09d" || data.weather[0].icon==="09n")
+    //    {
+    //     setwicon(light_rain);
+    //    }
+    //    else if(data.weather[0].icon==="10d" || data.weather[0].icon==="10n")
+    //    {
+    //     setwicon(drizzle);
+    //    }
+    //    else if(data.weather[0].icon==="11d" || data.weather[0].icon==="11n")
+    //    {
+    //     setwicon(thunder);
+    //    }
+    //    else if(data.weather[0].icon==="13d" || data.weather[0].icon==="13n")
+    //    {
+    //     setwicon(snow);
+    //    }
+    //    else{
+    //     setwicon(sunny);
+    //    }
+    //    if(data.weather[0].icon==="01d" || data.weather[0].icon==="02d" || data.weather[0].icon==="03d" || data.weather[0].icon==="04d" || data.weather[0].icon==="09d" || data.weather[0].icon==="10d" || data.weather[0].icon==="11d" || data.weather[0].icon==="13d")
+    //    {
              
-       }
+    //    }
   } catch (error) {
       console.error('Error fetching weather data:', error);
   }
   
     }
+    const handleKeyPress = (e) => {
+      if (e.key === 'Enter') {
+        searc();
+      }
+    };
   return (
     <div className='container'>
         <div className='top-bar'>
-            <input type='text' className='cityInput' placeHolder='search'/>
+            <input type='text' className='cityInput' placeHolder='search' onChange={(e) => setCityInput(e.target.value)}
+          onKeyPress={handleKeyPress}/>
               <div className='search' onClick={()=>{searc()}}>
                 <img src={search} alt=""/>
               </div>
@@ -147,7 +167,17 @@ const WeatherApp = () => {
               <div className='text'>Feels like</div>
             </div>
           </div>
-        </div>
+          </div>
+          <div className='data-container'>
+          <div className='data-min'>
+              <div className='temp-max'>28°C</div>
+              <div className='text'>Maximum</div>
+            </div>
+            <div className='data-max'>
+              <div className='temp-min'>24°C</div>
+              <div className='text'>Minimum</div>
+            </div>
+            </div>
     </div>
   )
 }

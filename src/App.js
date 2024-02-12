@@ -5,10 +5,11 @@ import { Outlet } from 'react-router-dom';
 export default function App(){
   return (
     <div>
-          <Routes>
+         {/* <Routes>
             <Route path="/" element={<Initial/>}/>
             <Route path="/weatherapp" element={<WeatherApp/>}/>
-          </Routes>
+          </Routes>*/} 
+          <Initial/>
     </div>
 
   );

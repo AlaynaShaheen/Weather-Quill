@@ -6,13 +6,18 @@ import { createBrowserRouter, createRoutesFromElements, Route, RouterProvider } 
 import WeatherApp from './Components/WeatherApp/WeatherApp';
 import Initial from './Components/Initial/Initial';
 const router=createBrowserRouter(
-    createRoutesFromElements(
-      <Route path='/' element={<App/>}>
+    createRoutesFromElements(<>
+      <Route path='/' element={<App/>}/>
          <Route path='/weatherapp' element={<WeatherApp/>}/>
-    </Route>
-  ))
+     </>
+    ))
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
     <RouterProvider router={router}/>
 );
+{/*const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(
+  <React.StrictMode>
+    <App />
+</React.StrictMode>*/}
 
